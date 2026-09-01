@@ -1,0 +1,27 @@
+indic_normalizer
+================
+
+This product includes software and/or data derived from third-party projects.
+It has no runtime dependency on them; the relevant material was vendored and
+adapted into this repository.
+
+1. AI4Bharat / indic-numtowords
+   - Source: https://github.com/AI4Bharat/indic-numtowords
+   - License: MIT
+   - Use: The number-to-words tables and cardinal conversion logic for the 22
+     scheduled Indian languages (+ English) were vendored (with minor import
+     adaptation) into `indic_normalizer/numbers/_numengine/`. Cardinal readings
+     are produced by this vendored engine.
+
+2. Kenpath Technologies / indic-text-normalization
+   - Source: https://github.com/Kenpath/indic-text-normalization
+   - License: Apache-2.0
+   - Use: Only its semiotic-class taxonomy (cardinal, ordinal, decimal,
+     fraction, date, time, telephone, measure, money, electronic, roman,
+     abbreviation, whitelist) informed the design of this project's
+     rule-based handlers. No code from this project is included; in particular
+     this project does NOT use pynini / WFST.
+
+All other code (preprocessing, class handlers, year/decimal/ordinal readers,
+the LaTeX-to-speech engine, and packaging) is original to this project and
+licensed under the MIT License (see LICENSE).
