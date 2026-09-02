@@ -14,16 +14,15 @@ copyright = "2026, TTS Team"
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
+    "sphinx.ext.doctest",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
 ]
 
 autodoc_member_order = "bysource"
-# undoc-members is NOT global: it would double-document dataclass attributes
-# already described in napoleon "Attributes:" sections (e.g. NormalizerConfig).
-# The handlers module opts in explicitly in api.rst instead.
+# Members are selected explicitly in api.rst so re-exported objects and
+# dataclass attributes are not documented twice.
 autodoc_default_options = {
-    "members": True,
     "show-inheritance": True,
 }
 autosummary_generate = True

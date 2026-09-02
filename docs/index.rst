@@ -1,45 +1,61 @@
-indic_normalizer
-================
+indic_normalizer documentation
+==============================
 
-A lightweight, pure-Python text normalizer designed as a pre-step before TTS
-for the 22 scheduled languages of India (+ English). It turns raw, messy text
-into clean spoken-form words: numbers, dates, currency, measures, LaTeX math,
-and more — while stripping artifacts that hurt synthesis.
+``indic_normalizer`` is a dependency-free Python text normalizer for TTS. It
+turns written forms—numbers, dates, money, measurements, identifiers, web
+addresses, and LaTeX—into words suitable for speech synthesis. Cardinal
+numbers are available in the 22 scheduled languages of India plus English.
 
-Quick start
------------
+.. doctest::
 
-.. code-block:: python
+   >>> from indic_normalizer import normalize
+   >>> normalize("India became independent in 1947.")
+   'India became independent in nineteen forty seven.'
+   >>> normalize("यह १९४७ की बात है।", lang="hi")
+   'यह एक हज़ार नौ सौ सैंतालीस की बात है।'
 
-   from indic_normalizer import normalize
+The package is designed as a deterministic pre-processing step. It has no
+runtime dependencies, does not require a model, and returns NFC-normalized
+text. Calling it again on normalized output is safe.
 
-   normalize("India became independent in 1947.", lang="en")
-   # 'India became independent in nineteen forty seven.'
+Choose a guide
+--------------
 
-   normalize("यह १९४७ की बात है।", lang="hi")
-   # 'यह एक हज़ार नौ सौ सैंतालीस की बात है।'
+* :doc:`getting-started` — installation and one-shot, reusable, and
+  configuration-object usage.
+* :doc:`normalization-cases` — a feature-by-feature catalog with inputs,
+  outputs, guards, and edge cases.
+* :doc:`languages` — supported language codes and number-language resolution.
+* :doc:`latex` — math, physics, chemistry, delimiters, environments, and
+  verbosity.
+* :doc:`configuration` — every option, pipeline order, artifact handling, and
+  production integration advice.
+* :doc:`api` — the public Python API and useful lower-level helpers.
 
-See the project ``README.md`` for the full feature table, number-language
-resolution rules, and configuration reference.
-
-Handler pipeline
-----------------
-
-Semiotic-class handlers run in a fixed priority order (specific → general);
-each rewrites its spans into words, so later handlers never re-match them::
-
-   web → abbrev → time → ratio → date → textdate → money → range → percent →
-   ids → bp → measure → native_scale → scientific → code → decade → ordinal →
-   alphanumeric → phone → dotted → cricket → fraction → decimal → position →
-   number → symbol → roman_ctx → roman (opt-in)
-
-The registry lives in :mod:`indic_normalizer.classes`; each handler is
-documented in :mod:`indic_normalizer.classes.handlers`.
-
-API reference
--------------
+Documentation contents
+----------------------
 
 .. toctree::
    :maxdepth: 2
+   :caption: User guide
+
+   getting-started
+   normalization-cases
+   languages
+   latex
+   configuration
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Reference
 
    api
+   review-status
+
+Project status
+--------------
+
+The package is beta software. Cardinal number support is broad; language-
+specific glue such as month names, currency words, ordinal suffixes, and
+connectors has a smaller review surface. See :doc:`review-status` before using
+unreviewed wording in a production voice.

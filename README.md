@@ -16,7 +16,8 @@ more — while stripping artifacts that hurt synthesis.
 ## Install
 
 ```bash
-pip install -e .        # from the repo root
+python -m pip install .             # local install from the repo root
+python -m pip install -e ".[test]"  # editable development install
 ```
 
 ## Quick start
@@ -35,6 +36,18 @@ normalize("यह १९४७ की बात है।", lang="hi")
 
 normalize("1947", lang="hi", number_lang="hi")
 # 'एक हज़ार नौ सौ सैंतालीस'                          (forced language)
+```
+
+For repeated calls, reuse a configured instance:
+
+```python
+from indic_normalizer import Normalizer, NormalizerConfig
+
+config = NormalizerConfig(lang="en", detect_years=False)
+normalizer = Normalizer(config=config)
+
+normalizer.normalize("India became independent in 1947.")
+# 'India became independent in one thousand nine hundred and forty seven.'
 ```
 
 ## How numbers pick their language
@@ -147,6 +160,7 @@ Auto-detected inside mixed text for the delimiters `$…$`, `$$…$$`, `\(…\)`
 | `detect_positions` | `True` | pairing style after room/page/flight/gate/bus (`room 225` → `two twenty five`) |
 | `year_range` | `(1100, 2099)` | candidate year range |
 | `detect_roman` | `False` | convert *bare* roman numerals everywhere (opt-in; risky). Context-gated romans (`Chapter IV`, `Class X`) are always on. |
+| `emit_variations` | `False` | reserved; currently does not change `normalize` output. Use `numbers.cardinal_variations` directly. |
 
 ## Languages
 
@@ -170,23 +184,38 @@ native wording are welcome.
 > Note: Sindhi (`sd`) has upstream gaps in the number engine for some values;
 > those fall back to a digit-by-digit reading rather than failing.
 
-## API documentation
+## Documentation
 
-Sphinx autodocs (autodoc + napoleon + viewcode, RTD theme):
+The Sphinx site is the complete reference:
+
+- [`docs/getting-started.rst`](docs/getting-started.rst) — install, one-shot calls, reusable instances,
+  configuration objects, and batch integration.
+- [`docs/normalization-cases.rst`](docs/normalization-cases.rst) — every supported normalization class, its
+  guards, and executable input/output examples.
+- [`docs/languages.rst`](docs/languages.rst) — all language codes and number-language resolution.
+- [`docs/latex.rst`](docs/latex.rst) — LaTeX math, physics, chemistry, and environments.
+- [`docs/configuration.rst`](docs/configuration.rst) — every option, artifact handling, and pipeline
+  precedence.
+- [`docs/api.rst`](docs/api.rst) — top-level and lower-level Python APIs.
+
+Build the HTML site (autodoc + napoleon + viewcode, RTD theme):
 
 ```bash
 pip install sphinx sphinx_rtd_theme      # docs-only dependencies
-sphinx-build -b html docs docs/_build/html
+python -m sphinx -W -b html docs docs/_build/html
 # open docs/_build/html/index.html
 ```
 
-`docs/index.rst` carries the overview and handler pipeline; `docs/api.rst`
-pulls the API reference straight from the module docstrings.
+The usage examples are executable doctests:
+
+```bash
+python -m sphinx -W -b doctest docs docs/_build/doctest
+```
 
 ## Tests
 
 ```bash
-python -m pytest -q      # 535 tests: per-handler suites, a 126-pin golden
+python -m pytest -q      # 582 tests: per-handler suites, a 150-pin golden
                          # corpus (each pin also idempotency-checked), and
                          # deterministic fuzz nets (pipeline + LaTeX)
 python examples/demo.py  # showcase

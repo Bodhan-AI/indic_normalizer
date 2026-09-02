@@ -58,8 +58,10 @@ class NormalizerConfig:
         detect_positions: Read 3-4 digit numbers after position words
             (room/page/flight/gate/bus) in pairing style: "room 225" ->
             "room two twenty five" (English only).
-        emit_variations: If True, ``normalize`` may annotate alt readings
-            (currently used by the number layer for debugging/inspection).
+        emit_variations: Reserved for future pipeline support. The current
+            ``normalize`` output is unchanged when this is true; call
+            :func:`indic_normalizer.numbers.cardinal_variations` directly to
+            inspect alternate cardinal readings.
     """
 
     lang: str = "en"
