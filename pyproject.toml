@@ -7,7 +7,7 @@ name = "indic_normalizer"
 version = "0.1.0"
 description = "Lightweight, pure-Python text normalizer for TTS across the 22 scheduled Indian languages (+ English), with LaTeX-to-speech."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"  # vendored engine uses PEP 585 generics (list[str])
 license = { text = "MIT" }
 authors = [{ name = "Bodhan AI" }]
 keywords = ["indic", "tts", "text-normalization", "number-to-words", "latex", "speech"]
